@@ -60,8 +60,8 @@ Before you begin, ensure you have the following installed:
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repository-url>
-    cd <your-repository-folder>
+    git clone https://github.com/Mhmdyasser33/auth-app-with--node-react-
+    cd folder-name
     ```
 
 2.  **Install dependencies** (Make sure you are in the right directory for the following commands):
@@ -100,8 +100,8 @@ Before you begin, ensure you have the following installed:
 
     ```
     PORT=5000 # or any port you prefer
-    MONGO_URI=mongodb://localhost:27017/auth_db  # Replace with your actual MongoDB URI
-    JWT_SECRET=your_secret_key # Replace with a strong, random secret key
+    MONGO_URI=mongodb://localhost:27017/test
+    JWT_SECRET=your_secret_key
     ```
     **Note:** Ensure your Mongo database is running.
 3.  **Start the backend server:**
@@ -122,7 +122,7 @@ Before you begin, ensure you have the following installed:
 2.  **Create a `.env` file**: Create a `.env` file in the client directory to store your sensitive variables.
 
       ```
-       VITE_BASE_URL="http://localhost:5000" # Replace with your backend URL
+       VITE_BASE_URL="http://localhost:5000" 
       ```
  
 3.  **Start the frontend development server:**
