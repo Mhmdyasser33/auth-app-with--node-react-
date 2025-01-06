@@ -1,16 +1,18 @@
-import { useState } from 'react'
+import {useContext, useState } from 'react'
 import styles from '../../styles/LoginForm.module.css'
 import apiRequest from '../../services/api';
+import Cookies from "js-cookie"
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 const serverPath = "http://localhost:5000";
+
 export default function LoginForm() {
+    const {setIsAuthenticated , setAccessToken} = useContext(AuthContext);
     const navigate = useNavigate() ; 
     const [userInput , setUserInput] = useState({
         email : '',
         password : ''
     })
-
-
     const handelSubmit = async(e)=>{
         e.preventDefault() ; 
         try{
@@ -26,10 +28,13 @@ export default function LoginForm() {
                 }
                 
             }) 
-            navigate("/users") ;       
-
+           setIsAuthenticated(true) ;
+           Cookies.set("accessToken" , res.accessToken) ;
+           setAccessToken(res.accessToken) ; 
+           navigate("/users") ; 
+          
         }catch(err){
-            /* console.log(`error in login ${err}`) */
+            console.log(`error in login ${err}`)
         }
     }
   return (

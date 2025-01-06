@@ -4,6 +4,7 @@ import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/Signup"
 import "../src/app.css"
 import Users from "./components/Users"
+import ProtectedRoutes from "./components/routes/ProtectedRoutes"
 function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<RootLayout/>}>
@@ -12,7 +13,11 @@ function App() {
        <Route path="register" element={<Signup/>}/>
        <Route path="login" element= {<Login/>}/>
       </Route>
-      <Route path="/users" element={<Users/>}/>
+      <Route path="/users" element={
+        <ProtectedRoutes>
+          <Users/>
+        </ProtectedRoutes>
+      }/>
      
     </Route>
   ))

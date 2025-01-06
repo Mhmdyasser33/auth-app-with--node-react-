@@ -22,7 +22,7 @@ const apiRequest = async({url , method , data = null , headers = {} , credential
        throw new Error("error in request") ; 
       } 
       const res = await response.json() ; 
-      console.log(res) ; 
+      return res ; 
    }catch(err){
     console.error(`API Request Error: ${err.message}`);
    }
