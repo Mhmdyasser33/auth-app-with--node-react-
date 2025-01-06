@@ -1,0 +1,33 @@
+table{
+    width: 100% ;
+    border-collapse: "collapse";
+    margin: 0 auto;
+    background-color: #f9f9f9;
+}
+
+tr{
+    background-color: #ddd;
+    text-align: left;
+}
+
+th{
+    padding: 10px;
+    border: 1px solid #ccc;  
+}
+td{
+    padding: 10px ;
+    border: 1px solid #ccc;
+}
+
+p {
+    color : red ; 
+    font-size: 30px;
+}
+
+h2{
+    text-align: center;
+    font-weight: bolder;
+    color: brown;
+    margin: 20px 0 40px 0 ;
+    font-size: 40px;
+}
