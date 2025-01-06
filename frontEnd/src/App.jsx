@@ -5,10 +5,11 @@ import Signup from "./pages/auth/Signup"
 import "../src/app.css"
 import Users from "./components/Users"
 import ProtectedRoutes from "./components/routes/ProtectedRoutes"
+import MainPage from "./pages/MainPage"
 function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<RootLayout/>}>
-    <Route index element={<h1 className="app-title">Authentication app with node js </h1>}/>
+    <Route index element={<MainPage/>}/>
       <Route path="auth">
        <Route path="register" element={<Signup/>}/>
        <Route path="login" element= {<Login/>}/>

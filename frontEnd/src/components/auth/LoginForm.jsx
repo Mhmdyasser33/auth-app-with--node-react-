@@ -2,12 +2,13 @@ import { useContext, useState } from 'react';
 import styles from '../../styles/LoginForm.module.css';
 import apiRequest from '../../services/api';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 const serverPath = 'http://localhost:5000';
 
 export default function LoginForm() {
     const { setIsAuthenticated, setAccessToken } = useContext(AuthContext);
+    const [error , setError] = useState("") ; 
     const navigate = useNavigate();
     const [userInput, setUserInput] = useState({
         email: '',
@@ -34,11 +35,12 @@ export default function LoginForm() {
             setAccessToken(res.accessToken);
             navigate('/users');
         } catch (err) {
-            console.log(`Error in login ${err}`);
+            setError(`Error in login ${error}`) ; 
         }
     };
 
     return (
+        <>
         <div className={styles.loginContainer}>
             <form className={styles.loginForm} onSubmit={handleSubmit}>
                 <h2 className={styles.formTitle}>Login</h2>
@@ -82,7 +84,12 @@ export default function LoginForm() {
                 <button type="submit" className={styles.loginButton}>
                     Login
                 </button>
+                <p style={{textAlign : "center" , fontSize : "20px" , marginTop : "10px"}}>
+                <Link  to="/auth/register" className={styles.link}>Register</Link>
+                </p>
             </form>
         </div>
+        {error && <p className={styles.p}>{error}</p>}
+        </>
     );
 }

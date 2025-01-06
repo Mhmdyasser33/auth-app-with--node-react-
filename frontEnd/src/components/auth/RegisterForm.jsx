@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from '../../styles/SignupForm.module.css';
 import apiRequest from '../../services/api';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const serverPath = "http://localhost:5000"; 
 
 export default function RegisterForm() {
@@ -34,7 +34,7 @@ export default function RegisterForm() {
             })
             navigate("/auth/login") ; 
         } catch (err) {
-            console.log(`error in register user ${err}`);
+        console.log(`error in register user ${err}`) ; 
         }
     };
     return (
@@ -86,7 +86,11 @@ export default function RegisterForm() {
                     />
                 </div>
                 <button type="submit">Register</button>
+                <p style={{textAlign : "center" , fontSize : "20px" , marginTop : "6px"}}>
+                <Link  to="/auth/login" className={styles.link}> Login </Link>
+                </p>
             </form>
+           
         </div>
     );
 }
