@@ -1,24 +1,30 @@
 .signupForm {
-    width: 450px;
-    margin: 50px auto 0 10px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 300px;
+    max-width: 700px;
     padding: 25px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    margin-top: -65px ;
+    border-radius: 10px;
     background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(20%);
 }
 
 .formGroup {
-    margin-bottom: 20px;
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
+    margin-bottom: 5px;
     font-size: 14px;
-    color: #333; 
+    font-weight: 600;
+    color: #333;
 }
 
 input {
@@ -27,14 +33,14 @@ input {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
-    background-color: #fefefe;
-    transition: border-color 0.3s ease;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input:focus {
     border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* تحسين التركيز */
 }
 
 button {
@@ -43,10 +49,10 @@ button {
     border: none;
     border-radius: 5px;
     background-color: #007bff;
-    color: white;
+    color: #fff;
     font-size: 16px;
-    cursor: pointer;
     font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
@@ -54,11 +60,36 @@ button:hover {
     background-color: #0056b3;
 }
 
-legend {
-    font-size: 18px;
-    font-weight: bold;
-    color: #007bff;
-    text-align: center;
-    margin-bottom: 20px;
+@media (max-width: 768px) {
+    .signupForm {
+        width: 70%;
+        padding: 20px;
+    }
+
+    input {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 15px;
+        padding: 10px;
+    }
 }
 
+@media (max-width: 480px) {
+    .signupForm {
+        width: 90%;
+        padding: 15px;
+    }
+
+    input {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

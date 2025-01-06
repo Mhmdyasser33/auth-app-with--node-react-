@@ -1,33 +1,75 @@
-table{
-    width: 100% ;
-    border-collapse: "collapse";
+table {
+    width: 100%;
+    border-collapse: collapse;
     margin: 0 auto;
     background-color: #f9f9f9;
 }
 
-tr{
+tr {
     background-color: #ddd;
     text-align: left;
 }
 
-th{
+th {
     padding: 10px;
-    border: 1px solid #ccc;  
+    border: 1px solid #ccc;
 }
-td{
-    padding: 10px ;
+
+td {
+    padding: 10px;
     border: 1px solid #ccc;
 }
 
 p {
-    color : red ; 
+    color: red;
     font-size: 30px;
 }
 
-h2{
+h2 {
     text-align: center;
     font-weight: bolder;
-    color: brown;
-    margin: 20px 0 40px 0 ;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+    margin: 20px 0 40px 0;
     font-size: 40px;
+}
+
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+
+    th,
+    td {
+        padding: 8px;
+    }
+
+    p {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 32px;
+        margin: 15px 0 30px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        font-size: 12px;
+    }
+
+    th,
+    td {
+        padding: 6px;
+    }
+
+    p {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 28px;
+        margin: 10px 0 20px 0;
+    }
 }
