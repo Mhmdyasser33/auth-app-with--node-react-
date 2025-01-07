@@ -27,7 +27,7 @@ const register = async ( req , res )=>{
         userInfo : {
            id : createdUser._id
         }
-    },accessTokenSecret , {expiresIn : "15m"}) ; 
+    },accessTokenSecret , {expiresIn : 13}) ; 
    
     const refreshToken = await jwt.sign({
        userInfo : {
@@ -69,7 +69,7 @@ const login = async (req , res)=>{
             userInfo : {
                 id : foundedUser._id
             },
-          },accessTokenSecret , {expiresIn : "15m"}) ; 
+          },accessTokenSecret , {expiresIn : 13}) ; 
           const refreshToken = await jwt.sign({
             userInfo : {
                 id : foundedUser._id
@@ -109,7 +109,7 @@ const refresh = async (req , res)=>{
             userInfo : {
                 id : foundedUser._id 
             }
-        },accessTokenSecret , {expiresIn : "15m"})
+        },accessTokenSecret , {expiresIn : 13})
         return res.status(200).json({accessToken})
     }) 
 

@@ -4,6 +4,7 @@ import apiRequest from '../../services/api';
 import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import { toast, ToastContainer } from 'react-toastify';
 const serverPath = 'http://localhost:5000';
 
 export default function LoginForm() {
@@ -33,9 +34,16 @@ export default function LoginForm() {
             setIsAuthenticated(true);
             Cookies.set('accessToken', res.accessToken);
             setAccessToken(res.accessToken);
-            navigate('/users');
+            toast.success("you are login successfully" , {
+                position  : "top-right" ,
+            })
+            setTimeout(() => {
+                navigate('/users');
+            },5000 );
         } catch (err) {
-            setError(`Error in login ${error}`) ; 
+           toast.error(`error in login ${err}`,{
+            position : "top-right"
+           })
         }
     };
 
@@ -90,6 +98,7 @@ export default function LoginForm() {
             </form>
         </div>
         {error && <p className={styles.p}>{error}</p>}
+        <ToastContainer/>
         </>
     );
 }

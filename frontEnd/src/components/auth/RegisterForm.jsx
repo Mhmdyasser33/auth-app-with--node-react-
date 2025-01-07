@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from '../../styles/SignupForm.module.css';
 import apiRequest from '../../services/api';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 const serverPath = "http://localhost:5000"; 
 
 export default function RegisterForm() {
@@ -32,7 +33,12 @@ export default function RegisterForm() {
                 email: '',
                 password: ''
             })
-            navigate("/auth/login") ; 
+            toast.success("you are register as a newUser.!" , {
+                position : "top-right",
+            })
+            setTimeout(() => {
+                navigate("/auth/login") ; 
+            }, 5000);
         } catch (err) {
         console.log(`error in register user ${err}`) ; 
         }
@@ -90,7 +96,7 @@ export default function RegisterForm() {
                 <Link  to="/auth/login" className={styles.link}> Login </Link>
                 </p>
             </form>
-           
+            <ToastContainer/>
         </div>
     );
 }

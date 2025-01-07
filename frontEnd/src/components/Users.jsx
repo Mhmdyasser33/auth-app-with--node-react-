@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../services/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/Users.module.css"
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const serverPath = "http://localhost:5000";
 
@@ -9,6 +12,31 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
   const accessToken = Cookies.get("accessToken");
+  const navigate = useNavigate("") ;  
+
+  const handleLogout = async()=>{
+    try{
+        if(accessToken){
+          Cookies.remove("accessToken") ; 
+        }
+        const res = await apiRequest({
+          url : `${serverPath}/auth/logout`,
+          method : "POST" , 
+        })
+       
+        const responseMessage = res.message ; 
+        toast.success(responseMessage , {
+          position: "top-right",
+        });
+        setTimeout(() => {
+          navigate("/auth/login")
+        }, 6000);
+       
+    } catch(err){
+        console.log(`error in deleting cookies ${err}`)
+    }
+     
+  } 
 
   useEffect(() => {
     const fetchUsers = async() => {
@@ -30,6 +58,7 @@ const Users = () => {
   }, [accessToken]);
 
   return (
+    <>
     <div>
       <h2 className ={styles.h2}>Users Info</h2>
       {error && <p className={styles.p}>{error}</p>}
@@ -68,6 +97,11 @@ const Users = () => {
         </tbody>
       </table>
     </div>
+     <div style={{marginTop : "20px"}}>
+     <button onClick={handleLogout}> logout </button>
+   </div>
+   <ToastContainer/>
+   </>
   );
 };
 
