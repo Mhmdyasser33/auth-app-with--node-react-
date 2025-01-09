@@ -11,6 +11,47 @@ const port = process.env.PORT || 5000 ;
 const rootRoute = require("./routes/rootRoute")
 const authRoute = require("./routes/authRoute") ; 
 const userRoute = require("./routes/userRoute") ;
+const swaggerUi = require("swagger-ui-express") ;
+const swaggerJsDoc = require("swagger-jsdoc") ; 
+const { version } = require("os");
+
+
+const swaggerOptions = {
+    definition : {
+        openapi : '3.0.0' ,
+        info : {
+         title : "Authentication app",
+         version : "1.0.0",
+         description : "a simple app for authentication with node js" 
+        },
+        /* responsible for divide endpoint to groups and name user want to name */
+        tags: [
+            {
+                name : "Authentication",
+            },
+            {
+                name : "Users" ,
+            }
+        ],
+        /* responsible for showing authorization button to enter token */
+        components : {
+            securitySchemes : {
+                userAuth : {
+                    type : "http" ,
+                    scheme : "bearer",
+                    bearerFormat : "JWT" , 
+                }
+            }
+        },
+     
+
+        
+    } ,
+    apis : ['./routes/*.js']
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions) ;
+app.use('/api-docs' , swaggerUi.serve , swaggerUi.setup(swaggerDocs)) ; 
 // first connect db
 connectDb()
 // set cors
@@ -43,18 +84,3 @@ app.all("*" , (req , res)=>{
         res.status(404).type("txt").send("404 not found") ; 
     }
 })
-
-// app.get("/" , (req , res)=>{
-//    console.log(req.cookies) ; 
-//    res.send("cookies send successfully")
-// })
-
-// app.get("/set-cookie" , (req , res)=>{
-//     res.cookie("name" , "mohamed")
-//     res.send("cookie send successfully")
-// })
-
-// app.get("/delete-cookie" , (req , res)=>{
-//     res.clearCookie("name") ;
-//     res.send("cookie deleted successfully")
-// })

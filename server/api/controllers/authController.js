@@ -27,7 +27,7 @@ const register = async ( req , res )=>{
         userInfo : {
            id : createdUser._id
         }
-    },accessTokenSecret , {expiresIn : 13}) ; 
+    },accessTokenSecret , {expiresIn : "15m"}) ; 
    
     const refreshToken = await jwt.sign({
        userInfo : {
@@ -69,7 +69,7 @@ const login = async (req , res)=>{
             userInfo : {
                 id : foundedUser._id
             },
-          },accessTokenSecret , {expiresIn : 13}) ; 
+          },accessTokenSecret , {expiresIn : "15m"}) ; 
           const refreshToken = await jwt.sign({
             userInfo : {
                 id : foundedUser._id
@@ -109,7 +109,7 @@ const refresh = async (req , res)=>{
             userInfo : {
                 id : foundedUser._id 
             }
-        },accessTokenSecret , {expiresIn : 13})
+        },accessTokenSecret , {expiresIn : "15m"})
         return res.status(200).json({accessToken})
     }) 
 
@@ -117,7 +117,6 @@ const refresh = async (req , res)=>{
        return res.status(400).json({message : `Error in get new accessToken ${err}`})
     }
 }
-
 const logout = async (req , res)=>{
     // get cookies 
     const cookies = req.cookies ; 
