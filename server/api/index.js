@@ -13,8 +13,6 @@ const authRoute = require("./routes/authRoute") ;
 const userRoute = require("./routes/userRoute") ;
 const swaggerUi = require("swagger-ui-express") ;
 const swaggerJsDoc = require("swagger-jsdoc") ; 
-const { version } = require("os");
-
 
 const swaggerOptions = {
     definition : {

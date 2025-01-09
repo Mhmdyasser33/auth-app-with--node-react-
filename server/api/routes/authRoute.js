@@ -207,6 +207,129 @@ router.get("/refresh", authController.refresh);
  */
 
 router.post("/logout", authController.logout);
+/**
+ * @swagger
+ * /auth/forgot-password:
+ *   post:
+ *     summary: Request a password reset email.
+ *     description: Generates a password reset token for the user and sends a reset email with a link containing the token.
+ *     tags:
+ *       - Authentication
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The email address of the user requesting the password reset.
+ *                 example: user@example.com
+ *     responses:
+ *       200:
+ *         description: Password reset email successfully sent.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Password reset email sent.
+ *       400:
+ *         description: Invalid request or user not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found.
+ *       500:
+ *         description: Internal server error or email sending failure.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal server error.
+ */
+
+router.post("/forgot-password",authController.forgotPassword);
+/**
+ * @swagger
+ * /auth/reset-password:
+ *   post:
+ *     summary: Reset user password using a valid token.
+ *     description: Allows users to reset their password by providing a valid reset token and a new password. The token is checked for validity and expiration.
+ *     tags:
+ *       - Authentication
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The password reset token sent via email.
+ *         example: some-random-token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newPassword
+ *             properties:
+ *               newPassword:
+ *                 type: string
+ *                 description: The new password for the user.
+ *                 example: securepassword123
+ *     responses:
+ *       200:
+ *         description: Password reset successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: password has been reset successfully
+ *       400:
+ *         description: Invalid request (e.g., expired token or invalid password).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   examples:
+ *                     tokenExpired:
+ *                       value: Token expire
+ *                     invalidPassword:
+ *                       value: password must be greater than 6 character long
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+router.post("/reset-password",authController.resetPassword)
+
 
 
 module.exports = router ; 
