@@ -328,7 +328,7 @@ router.post("/forgot-password",authController.forgotPassword);
  *                   example: Internal server error
  */
 
-router.post("/reset-password",authController.resetPassword)
+router.post(`/reset-password`,authController.resetPassword)
 
 
 

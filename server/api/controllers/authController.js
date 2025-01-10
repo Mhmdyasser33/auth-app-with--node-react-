@@ -138,18 +138,18 @@ const logout = async (req , res)=>{
 
 const forgotPassword = async(req , res)=>{
     try{
-        const {email} = req.body ;
+        const { email } = req.body ;
         const user = await User.findOne({email}) ; 
         if(!user){
             return res.status(400).json({message : "User not found"})
         }
 
-        if(user.passwordResetToken && user.passwordExpirationToken > Date.now()){
+         if(user.passwordResetToken && user.passwordExpirationToken > Date.now()){
             return res.status(400).json({message: "A reset email has already been sent." })
-        }
+        }  
 
         const token = crypto.randomBytes(32).toString("hex"); // generate token
-        const tokenExpiration = Date.now() +  24 * 60 * 60 * 1000 // equivalent -> 1 hour
+        const tokenExpiration = Date.now() +  24 * 60 * 60 * 1000 // equivalent -> 1 day
         user.passwordResetToken = token ;
         user.passwordExpirationToken = tokenExpiration
         await user.save() ; 
@@ -162,7 +162,8 @@ const forgotPassword = async(req , res)=>{
             }
         })
 
-        const resetLink = `http://localhost:5000/reset-password?token=${token}`
+        const resetLink = `http://localhost:5000/auth/reset-password/?token=${token}`
+        console.log(resetLink) ; 
         const mailOptions = {
             from : process.env.USERNAME_EMAIL , 
             to : email ,
@@ -177,40 +178,40 @@ const forgotPassword = async(req , res)=>{
             return res.status(500).json({ message: "Failed to send reset email." });
         }
         return res.status(200).json({message : "Password reset email sent."});
-    }catch(err){
-        return res.status(500).json({ message: "Internal server error" });
-         
-    }
-}
-
-const resetPassword = async(req , res)=>{
-    try{
-        const {token} = req.query ; 
-        console.log(token)
-        const {newPassword} = req.body ; 
-         
-        if(!newPassword || newPassword.length < 6){
-            return res.status(400).json({message : "password must be greater than 6 character long "});
+        }catch(err){
+            return res.status(500).json({ message: "Internal server error" });
+            
         }
-    
+}
+const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.query;
+        const { newPassword } = req.body;
+        if(!newPassword){
+            return res.status(400).json({message : "newPassword field are required"})
+        }
+        if (!newPassword || newPassword.length < 6) {
+            return res.status(400).json({ message: "password must be greater than 6 character long " });
+        }
         const user = await User.findOne({
-            passwordResetToken : token , 
-            passwordExpirationToken : {$gt : Date.now()} 
-        })
-    
-        if(!user){
-            return res.status(400).json({message : "Token expire"}) ; 
+            passwordResetToken: token,
+            passwordExpirationToken: { $gt: Date.now() }
+        });
+        if (!user) {
+            return res.status(400).json({ message: "The resetToken has been expired" });
         }
-        const hashedPassword = await bcrypt.hash(newPassword , 10) ; 
-        user.password = hashedPassword ;
-        user.passwordResetToken = null ; 
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        user.passwordResetToken = null;
         user.passwordExpirationToken = null;
-        await user.save() ; // to save change in db
-        return res.status(200).json({message : "password has been reset successfully"});
-    }catch(err){
+        await user.save(); // to save change in db
+         return res.status(200).json({message : "password has been reset successfully"});
+    } catch (err) {
+         console.error(`Error in resetPassword:`, err)
         return res.status(500).json({ message: "Internal server error" });
     }
-   
-}
+
+};
 
 module.exports = {register,login ,refresh,forgotPassword,resetPassword,logout}
