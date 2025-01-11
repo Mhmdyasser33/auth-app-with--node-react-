@@ -9,7 +9,7 @@ const serverPath = 'http://localhost:5000';
 
 export default function LoginForm() {
     const { setIsAuthenticated, setAccessToken } = useContext(AuthContext);
-    const [error , setError] = useState("") ; 
+    const [error] = useState("") ; 
     const navigate = useNavigate();
     const [userInput, setUserInput] = useState({
         email: '',
@@ -93,7 +93,7 @@ export default function LoginForm() {
                     Login
                 </button>
                 <p style={{textAlign : "center" , fontSize : "20px" , marginTop : "10px"}}>
-                <Link  to="/auth/register" className={styles.link}>Register</Link>
+                <Link  to="/auth/forgot-password" className={styles.link}>forgot  password </Link>
                 </p>
             </form>
         </div>

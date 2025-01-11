@@ -23,7 +23,6 @@ const Users = () => {
           url : `${serverPath}/auth/logout`,
           method : "POST" , 
         })
-       
         const responseMessage = res.message ; 
         toast.success(responseMessage , {
           position: "top-right",

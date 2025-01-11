@@ -27,12 +27,13 @@ export default function RegisterForm() {
                     password: userInputs.password
                 }
             });
+        
             setUserInputs({
                 first_name: '',
                 last_name: '',
                 email: '',
                 password: ''
-            })
+            }) 
             toast.success("you are register as a newUser.!" , {
                 position : "top-right",
             })

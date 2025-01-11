@@ -30,7 +30,7 @@ const register = async ( req , res )=>{
         userInfo : {
            id : createdUser._id
         }
-    },accessTokenSecret , {expiresIn : "15m"}) ; 
+    },accessTokenSecret , {expiresIn : "5d"}) ; 
    
     const refreshToken = await jwt.sign({
        userInfo : {
@@ -72,7 +72,7 @@ const login = async (req , res)=>{
             userInfo : {
                 id : foundedUser._id
             },
-          },accessTokenSecret , {expiresIn : "15m"}) ; 
+          },accessTokenSecret , {expiresIn : "5d"}) ; 
           const refreshToken = await jwt.sign({
             userInfo : {
                 id : foundedUser._id
@@ -112,7 +112,7 @@ const refresh = async (req , res)=>{
             userInfo : {
                 id : foundedUser._id 
             }
-        },accessTokenSecret , {expiresIn : "15m"})
+        },accessTokenSecret , {expiresIn : "5d"})
         return res.status(200).json({accessToken})
     }) 
 
@@ -139,14 +139,14 @@ const logout = async (req , res)=>{
 const forgotPassword = async(req , res)=>{
     try{
         const { email } = req.body ;
-        const user = await User.findOne({email}) ; 
+        const user = await User.findOne({email}) ;
         if(!user){
             return res.status(400).json({message : "User not found"})
         }
-
-         if(user.passwordResetToken && user.passwordExpirationToken > Date.now()){
+ 
+       /*  if(user.passwordResetToken && user.passwordExpirationToken > Date.now()){
             return res.status(400).json({message: "A reset email has already been sent." })
-        }  
+        }   */  
 
         const token = crypto.randomBytes(32).toString("hex"); // generate token
         const tokenExpiration = Date.now() +  24 * 60 * 60 * 1000 // equivalent -> 1 day
@@ -214,4 +214,4 @@ const resetPassword = async (req, res) => {
 
 };
 
-module.exports = {register,login ,refresh,forgotPassword,resetPassword,logout}
+module.exports = {register,login ,refresh,forgotPassword,resetPassword,logout};
