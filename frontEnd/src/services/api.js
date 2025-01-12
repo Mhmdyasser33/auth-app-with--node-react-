@@ -1,5 +1,5 @@
 
-const apiRequest = async({url , method , data = null , headers = {} , credentials = "include" , accessToken = null})=>{
+const apiRequest = async({url , method , data = null , headers = {},credentials = "include" , accessToken = null})=>{
    try{
      const requestOptions = {
         method , 
@@ -15,6 +15,7 @@ const apiRequest = async({url , method , data = null , headers = {} , credential
      if(data){
         requestOptions.body = JSON.stringify(data) ; 
      }
+    
       // send a request
       const response = await fetch(url , requestOptions) ; 
       if(!response.ok){

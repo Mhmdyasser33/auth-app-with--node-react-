@@ -1,10 +1,10 @@
 import { useState } from "react";
-import classNames from "../../styles/ForgotPassword.module.css" ; 
+import className from "../../styles/ForgotPassword.module.css" ; 
 /* import apiRequest from "../../services/api"; */
 import { toast, ToastContainer } from 'react-toastify';
 import apiRequest from "../../services/api";
 const serverPath = "http://localhost:5000"
-const ForgotPassword = () => {
+const Forgot_Password = () => {
   const [email , setEmail] = useState("") ;
   const [error] = useState("") ; 
 
@@ -23,7 +23,7 @@ const ForgotPassword = () => {
         method : "POST" ,
         data : {email,}
       })
-        toast.success(response.message , {
+        toast.success(`${response.message} go to your email to Reset it` , {
           position : "top-right" 
          })
          setEmail(""); 
@@ -37,10 +37,10 @@ const ForgotPassword = () => {
     }
   }
   return (
-    <div className={classNames.container}>
-      <h2 className={classNames.header}>Forgot Password</h2>
-      <form className={classNames.form} onSubmit={handleForgotPassword}>
-        <label className={classNames.label} htmlFor="email">
+    <div className={className.container}>
+      <h2 className={className.header}>Forgot Password</h2>
+      <form className={className.form} onSubmit={handleForgotPassword}>
+        <label className={className.label} htmlFor="email">
           Enter your email:
         </label>
         <input
@@ -48,10 +48,10 @@ const ForgotPassword = () => {
           id="email"
           value={email}
           onChange={(e)=>setEmail(e.target.value)}
-          className={classNames.input}
+          className={className.input}
           placeholder="Enter your email"
         />
-        <button type="submit"  className={classNames.button}>
+        <button type="submit"  className={className.button}>
           Send Reset Link
         </button>
         {error ? <p> {error}</p> : ""}
@@ -60,7 +60,4 @@ const ForgotPassword = () => {
     </div>
   );
 };
-
-
-
-export default ForgotPassword;
+export default Forgot_Password;

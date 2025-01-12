@@ -1,11 +1,11 @@
-import Reset_Password from "../../pages/auth/ResetPassword";
+import Reset_password from "../../pages/auth/ResetPassword"
 
 
 export default function ResetPassword() {
   return (
     <div>
         <h2>Reset password</h2>
-        <Reset_Password/>
+        <Reset_password/>
     </div>
   )
 }

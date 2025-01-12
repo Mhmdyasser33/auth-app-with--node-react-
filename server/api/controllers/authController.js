@@ -30,7 +30,7 @@ const register = async ( req , res )=>{
         userInfo : {
            id : createdUser._id
         }
-    },accessTokenSecret , {expiresIn : "5d"}) ; 
+    },accessTokenSecret , {expiresIn : "20d"}) ; 
    
     const refreshToken = await jwt.sign({
        userInfo : {
@@ -72,7 +72,7 @@ const login = async (req , res)=>{
             userInfo : {
                 id : foundedUser._id
             },
-          },accessTokenSecret , {expiresIn : "5d"}) ; 
+          },accessTokenSecret , {expiresIn : "20d"}) ; 
           const refreshToken = await jwt.sign({
             userInfo : {
                 id : foundedUser._id
@@ -112,7 +112,7 @@ const refresh = async (req , res)=>{
             userInfo : {
                 id : foundedUser._id 
             }
-        },accessTokenSecret , {expiresIn : "5d"})
+        },accessTokenSecret , {expiresIn : "20d"})
         return res.status(200).json({accessToken})
     }) 
 
@@ -162,8 +162,7 @@ const forgotPassword = async(req , res)=>{
             }
         })
 
-        const resetLink = `http://localhost:5000/auth/reset-password/?token=${token}`
-        console.log(resetLink) ; 
+        const resetLink = `http://localhost:4000/auth/reset-password/?token=${token}`;
         const mailOptions = {
             from : process.env.USERNAME_EMAIL , 
             to : email ,
@@ -200,12 +199,15 @@ const resetPassword = async (req, res) => {
         if (!user) {
             return res.status(400).json({ message: "The resetToken has been expired" });
         }
-
+        console.table(`----------- ${token}`);
+        console.log(`  ------------- before ${user}`)
         const hashedPassword = await bcrypt.hash(newPassword, 10);
+        console.log(hashedPassword);
         user.password = hashedPassword;
         user.passwordResetToken = null;
         user.passwordExpirationToken = null;
         await user.save(); // to save change in db
+        console.log(`  ------------- after ${user}`)
          return res.status(200).json({message : "password has been reset successfully"});
     } catch (err) {
          console.error(`Error in resetPassword:`, err)
