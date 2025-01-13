@@ -144,14 +144,14 @@ const forgotPassword = async(req , res)=>{
             return res.status(400).json({message : "User not found"})
         }
  
-       /*  if(user.passwordResetToken && user.passwordExpirationToken > Date.now()){
+         if(user.passwordResetToken && user.passwordExpirationToken > Date.now()){
             return res.status(400).json({message: "A reset email has already been sent." })
-        }   */  
+        }   
 
-        const token = crypto.randomBytes(32).toString("hex"); // generate token
-        const tokenExpiration = Date.now() +  24 * 60 * 60 * 1000 // equivalent -> 1 day
-        user.passwordResetToken = token ;
-        user.passwordExpirationToken = tokenExpiration
+        const resetToken = crypto.randomBytes(32).toString("hex"); // generate token
+        const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex") ; 
+        user.resetPasswordToken = hashedToken
+        user.resetPasswordExpires = Date.now() + 15 * 60 * 1000 ; 
         await user.save() ; 
 
         const transporter = nodeMailer.createTransport({
@@ -161,8 +161,8 @@ const forgotPassword = async(req , res)=>{
                 pass : process.env.USERNAME_PASSWORD
             }
         })
+        const resetLink = `http://localhost:4000/auth/reset-password/${resetToken}`;
 
-        const resetLink = `http://localhost:4000/auth/reset-password/?token=${token}`;
         const mailOptions = {
             from : process.env.USERNAME_EMAIL , 
             to : email ,
@@ -170,13 +170,8 @@ const forgotPassword = async(req , res)=>{
             text : `Click here to reset your password ${resetLink}`,
             html : `<a href="${resetLink}">Reset password </a>`
         }
-         // to avoid if failure happen in sending email...
-        try{
-            await transporter.sendMail(mailOptions) ; 
-        }catch(GmailError){
-            return res.status(500).json({ message: "Failed to send reset email." });
-        }
-        return res.status(200).json({message : "Password reset email sent."});
+        await transporter.sendMail(mailOptions) ; 
+        return res.status(200).json({message : "Password reset link sent to email"});
         }catch(err){
             return res.status(500).json({ message: "Internal server error" });
             
@@ -184,36 +179,41 @@ const forgotPassword = async(req , res)=>{
 }
 const resetPassword = async (req, res) => {
     try {
-        const { token } = req.query;
+        console.log("Request received", req.query, req.body); 
+        const { token } = req.params;
         const { newPassword } = req.body;
-        if(!newPassword){
-            return res.status(400).json({message : "newPassword field are required"})
-        }
-        if (!newPassword || newPassword.length < 6) {
-            return res.status(400).json({ message: "password must be greater than 6 character long " });
-        }
-        const user = await User.findOne({
-            passwordResetToken: token,
-            passwordExpirationToken: { $gt: Date.now() }
-        });
-        if (!user) {
-            return res.status(400).json({ message: "The resetToken has been expired" });
-        }
-        console.table(`----------- ${token}`);
-        console.log(`  ------------- before ${user}`)
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        console.log(hashedPassword);
-        user.password = hashedPassword;
-        user.passwordResetToken = null;
-        user.passwordExpirationToken = null;
-        await user.save(); // to save change in db
-        console.log(`  ------------- after ${user}`)
-         return res.status(200).json({message : "password has been reset successfully"});
-    } catch (err) {
-         console.error(`Error in resetPassword:`, err)
-        return res.status(500).json({ message: "Internal server error" });
-    }
 
+        if (!newPassword) {
+            return res.status(400).json({ message: "newPassword field is required" });
+        }
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: "Password must be greater than 6 characters long" });
+        }
+
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+        console.log("Hashed token:", hashedToken);
+
+        const user = await User.findOne({
+            resetPasswordToken: hashedToken,
+            resetPasswordExpires: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid or expired token" });
+        }
+
+        console.log("User found:", user);
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        await user.save();
+        return res.status(200).json({ message: "Password reset successful" });
+    } catch (err) {
+        console.error("Error during password reset:", err); 
+        return res.status(500).json({ message: `Internal server error: ${err.message}` });
+    }
 };
 
 module.exports = {register,login ,refresh,forgotPassword,resetPassword,logout};

@@ -10,18 +10,17 @@ const Forgot_Password = () => {
 
   const handleForgotPassword = async(e)=>{
     e.preventDefault();
-    try{
-      if(!email){
-        toast.error("Email field are required" , {
-          position : "top-right" 
-         })
-        return ;
-      }
-        
+    if(!email){
+      toast.error("Email field are required" , {
+        position : "top-right" 
+       })
+      return ;
+    }
+    try{    
       const response = await apiRequest({
         url : `${serverPath}/auth/forgot-password` , 
         method : "POST" ,
-        data : {email,}
+        data : {email}
       })
         toast.success(`${response.message} go to your email to Reset it` , {
           position : "top-right" 

@@ -39,7 +39,7 @@ export default function LoginForm() {
             })
             setTimeout(() => {
                 navigate('/users');
-            },5000 );
+            },1000 );
         } catch (err) {
            toast.error(`error in login ${err}`,{
             position : "top-right"
@@ -92,9 +92,14 @@ export default function LoginForm() {
                 <button type="submit" className={styles.loginButton}>
                     Login
                 </button>
+                <div className="sub-items" style={{display : "flex", justifyContent : "space-between", }}>
                 <p style={{textAlign : "center" , fontSize : "20px" , marginTop : "10px"}}>
                 <Link  to="/auth/forgot-password" className={styles.link}>forgot  password </Link>
                 </p>
+                <p style={{textAlign : "center" , fontSize : "20px" , marginTop : "10px"}}>
+                <Link  to="/auth/register" className={styles.link}>register </Link>
+                </p>
+                </div>
             </form>
         </div>
         {error && <p className={styles.p}>{error}</p>}

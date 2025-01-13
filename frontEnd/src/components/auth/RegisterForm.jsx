@@ -39,7 +39,9 @@ export default function RegisterForm() {
             })
             setTimeout(() => {
                 navigate("/auth/login") ; 
-            }, 5000);
+            }, 1000);
+
+            return res;
         } catch (err) {
         console.log(`error in register user ${err}`) ; 
         }
@@ -93,9 +95,13 @@ export default function RegisterForm() {
                     />
                 </div>
                 <button type="submit">Register</button>
-                <p style={{textAlign : "center" , fontSize : "20px" , marginTop : "6px"}}>
-                <Link  to="/auth/login" className={styles.link}> Login </Link>
+              
+                <p style={{ textAlign: "center", fontSize: "20px", marginTop: "15px", marginRight: "10px" }}>
+                  <Link to="/auth/login" className={styles.link}> login </Link>
                 </p>
+    
+
+               
             </form>
             <ToastContainer/>
         </div>

@@ -29,7 +29,7 @@ const Users = () => {
         });
         setTimeout(() => {
           navigate("/auth/login")
-        }, 6000);
+        }, 1000);
        
     } catch(err){
         console.log(`error in deleting cookies ${err}`)
